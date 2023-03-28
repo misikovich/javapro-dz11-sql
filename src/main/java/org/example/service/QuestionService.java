@@ -17,11 +17,13 @@ public class QuestionService {
     private final Map<String, List<Question>> questionsByTopic = new HashMap<>();
 
     public Question getRandomByTopic(String topic) {
-        List<Question> questions = questionsByTopic.computeIfAbsent(topic, questionRepository::getByTopic);
-        questionsByTopic.put(topic, questions);
-        if (questions.isEmpty()) return Question.builder().build();
-        int randomInt = new Random().nextInt(questions.size());
-        return questions.get(randomInt);
+//        List<Question> questions = questionsByTopic.computeIfAbsent(topic, questionRepository::getByTopic);
+//        questionsByTopic.put(topic, questions);
+//        if (questions.isEmpty()) return Question.builder().build();
+//        int randomInt = new Random().nextInt(questions.size());
+//        return questions.get(randomInt);
+        Question question = questionRepository.getRandomByTopic(topic);
+        return question == null ? new Question() : question;
     }
 
     public Question getRandomQuestion() {

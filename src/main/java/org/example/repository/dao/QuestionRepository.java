@@ -11,4 +11,5 @@ public interface QuestionRepository {
     Integer delete(int id);
     List<Question> getByTopic(String topic);
     List<Question> getAll();
+    Question getRandomByTopic(String topic);
 }

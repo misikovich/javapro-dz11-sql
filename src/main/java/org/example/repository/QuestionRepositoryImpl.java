@@ -24,6 +24,7 @@ public class QuestionRepositoryImpl implements QuestionRepository {
     private final String updateByQuestion = "update question set text = ?, topic = ? where id = ?";
     private final String deleteById = "delete from question where id = ?";
     private final String findAllQuestions = "select * from question";
+    private final String findRandomByTopic = "select * from question where topic = ? order by random() limit 1;";
     @Override
     public Question get(int id) {
         try {
@@ -114,6 +115,26 @@ public class QuestionRepositoryImpl implements QuestionRepository {
                         .build());
             }
             return result;
+        } catch (SQLException e) {
+            throw new SQLUpdateException(e.getMessage(), connection);
+        }
+    }
+
+    @Override
+    public Question getRandomByTopic(String topic) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(findRandomByTopic);
+            preparedStatement.setString(1, topic);
+            preparedStatement.execute();
+            ResultSet resultSet = preparedStatement.getResultSet();
+            if (resultSet.next()) {
+                return Question.builder()
+                        .id(resultSet.getInt("id"))
+                        .topic(resultSet.getString("topic"))
+                        .text(resultSet.getString("text"))
+                        .build();
+            }
+            return null;
         } catch (SQLException e) {
             throw new SQLUpdateException(e.getMessage(), connection);
         }

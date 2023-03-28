@@ -36,6 +36,11 @@ public class QuestionServiceTest {
         public List<Question> getAll() {
             return new ArrayList<>(testQuestions);
         }
+
+        @Override
+        public Question getRandomByTopic(String topic) {
+            return null;
+        }
     };
     private static QuestionService questionService;
     static List<Question> testQuestions = new ArrayList<>();
