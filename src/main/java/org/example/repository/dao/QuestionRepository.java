@@ -6,8 +6,9 @@ import java.util.List;
 
 public interface QuestionRepository {
     Question get(int id);
-    void save(Question question);
+    Integer save(Question question);
     void update(Question question);
-    void delete(int id);
+    Integer delete(int id);
     List<Question> getByTopic(String topic);
+    List<Question> getAll();
 }

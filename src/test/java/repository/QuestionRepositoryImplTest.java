@@ -3,29 +3,21 @@ package repository;
 import org.example.model.Question;
 import org.example.repository.QuestionRepositoryImpl;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 public class QuestionRepositoryImplTest {
-    private final String username = "postgres";
-    private final String password = "postgrespw";
-    private final String url = "jdbc:postgresql://localhost:32768/postgres";
-    private Connection connection;
-    private QuestionRepositoryImpl questionRepository;
+    private static QuestionRepositoryImpl questionRepository;
 
-    @Before
-    public void init() throws SQLException {
-        connection = DriverManager.getConnection(url, username, password);
-        questionRepository = new QuestionRepositoryImpl(connection);
+    @BeforeClass
+    public static void init() {
+        questionRepository = new QuestionRepositoryImpl();
     }
     @Test
     public void getTest() {
         Question question = questionRepository.get(1);
-        Assert.assertNotNull(question);
+        Assert.assertFalse(question.isEmpty());
     }
     @Test
     public void getByTopicTest() {
@@ -55,7 +47,8 @@ public class QuestionRepositoryImplTest {
         Question question = questionRepository.getByTopic("Test").get(0);
         questionRepository.delete(question.getId());
 
-        Assert.assertNull(questionRepository.get(question.getId()));
+        Question actual = questionRepository.get(question.getId());
+        Assert.assertTrue(actual.isEmpty());
     }
 
 
